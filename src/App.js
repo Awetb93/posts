@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from 'react'
+import Home from "./components/home"
+import Header from "./utils/header";
+import { Router } from "react-router-dom";
+import {CssBaseline,StylesProvider} from "@material-ui/core"
+import History from "./utils/history"
+export default function App() {
+    return (
+        <StylesProvider injectFirst>
+  <CssBaseline  >
+             
+<Home />
+            <Router history={History}>
+                <Header/>
+            </Router>
+            
+    
+            </CssBaseline>
+        </StylesProvider>
+          
+            
+       
+    )
 }
-
-export default App;
