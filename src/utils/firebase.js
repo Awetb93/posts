@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
    var firebaseConfig = {
-    apiKey: "AIzaSyCw7oM0fjSJjYaHIQ8klhpTMRn8slU8IzQ",
+    apiKey: process.env.REACT_APP_API_KEY,
     authDomain: "community-fc578.firebaseapp.com",
     databaseURL: "https://community-fc578.firebaseio.com",
     projectId: "community-fc578",
