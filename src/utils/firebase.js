@@ -7,7 +7,7 @@ import firebase from "firebase/app";
     storageBucket: "community-fc578.appspot.com",
     messagingSenderId: "441624182448",
     appId: "1:441624182448:web:fbd4caeed85da4b04cc575",
-     measurementId: "G-23G3KFPWX3",
+      measurementId: "G-23G3KFPWX3",
   
   };
   // Initialize Firebase

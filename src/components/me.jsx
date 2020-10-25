@@ -4,9 +4,10 @@ import PhotoCamera from "@material-ui/icons/PhotoCamera"
 import { useLocation } from "react-router-dom";
 import firebase from "../utils/firebase";
 import DisplayPost from "./displayPosts"
-// import Filter from "bad-words"
+import moment from "moment"
 import 'firebase/database'
 import 'firebase/storage'
+import UserMenu from "./users"
 export default function Me() {
     // const filter=new Filter()
     const [text, setText] = useState('');
@@ -28,13 +29,13 @@ export default function Me() {
             let posts = [];
            
              for (let id in user) {
-                users.push({ email: user[id].profile.email, id });
+                users.push({ email: user[id].profile.email, id, name:user[id].profile.name });
                 for (let ids in user[id].posts) {
                     if (user[id].posts[ids].posts.imageName) {
-                        posts.push({ posts: user[id].posts[ids].posts.text, imageName:user[id].posts[ids].posts.imageName,likes:user[id].posts[ids].posts.likes, postId:ids, id,name:user[id].profile.name })    
+                        posts.push({ posts: user[id].posts[ids].posts.text, imageName:user[id].posts[ids].posts.imageName,likes:user[id].posts[ids].posts.likes, postId:ids, id,name:user[id].profile.name,time:user[id].posts[ids].posts.time })    
                     }
                     else {
-                          posts.push({ posts: user[id].posts[ids].posts.text,postId:ids, id,name:user[id].profile.name,likes:user[id].posts[ids].posts.likes })  
+                          posts.push({ posts: user[id].posts[ids].posts.text,postId:ids, id,name:user[id].profile.name,likes:user[id].posts[ids].posts.likes,time:user[id].posts[ids].posts.time })  
                     }
                   
                 }
@@ -60,7 +61,7 @@ export default function Me() {
             const storage = firebase.storage().ref('Images');
             const reg = imageName.match(/[ \w-]+?(?=\.)/);
             const ref = storage.child(reg[0])
-            db.child(me.id).child('posts').push({ posts: { text, imageName: reg[0],likes:0 } });
+            db.child(me.id).child('posts').push({ posts: { text, imageName: reg[0],likes:0,time:moment().format('hh:mm:ss a')  } });
             ref.put(imageFile).then((snap) => {
                 console.log('file was uploaded')
                 setImage("")
@@ -68,14 +69,14 @@ export default function Me() {
             })
         }
         else if (me && !imageFile) {
-            db.child(me.id).child('posts').push({ posts: { text,likes:0 } });
+            db.child(me.id).child('posts').push({ posts: { text,likes:0,time:moment().format('hh:mm:ss a')  } });
             setText("")
         }
         else if (!me && imageFile) {
             const storage = firebase.storage().ref('Images');
             const reg = imageName.match(/[ \w-]+?(?=\.)/);
             const ref = storage.child(reg[0])
-            db.push({ profile: { ...state, age: 24 }, posts: { 0:{posts:{text, imageName: reg[0], likes: 0 }} } })
+            db.push({ profile: { ...state, age: 24 }, posts: { 0:{posts:{text, imageName: reg[0], likes: 0,time:moment().format('hh:mm:ss a')   }} } })
              ref.put(imageFile).then((snap) => {
                 console.log('file was uploaded')
                 
@@ -88,7 +89,7 @@ export default function Me() {
        
         else {
       
-            db.push({ profile: { ...state, age: 24 },  posts: { 0:{posts:{text, likes: 0 }} } })
+            db.push({ profile: { ...state, age: 24 },  posts: { 0:{posts:{text, likes: 0,time:moment().format('hh:mm:ss a')  }} } })
             setText("")
         } }
  
@@ -104,7 +105,7 @@ export default function Me() {
   alignItems="center" >
             <Grid item sm={1} md={2} ></Grid>
             <Grid item container sm={10} md={8} >
-                <Grid item sm={12} md={12}>
+                <Grid item sm={10} md={10}>
                     <Paper style={{height:'170px'}}>
                         <div className="post" >
                             <div className="avatar" >
@@ -131,7 +132,14 @@ export default function Me() {
                      
                             <DisplayPost userInfo={dbusers} posts={posts} />
                         </div>
+                        <div className="user-container">
+                                 <UserMenu users={dbusers} className="user-list"/>
+                        </div>
                         </Paper>
+                </Grid>
+                <Grid item sm={1} md={2} >
+
+               
                 </Grid>
             </Grid>
             <Grid item sm={1} md={2} ></Grid>

@@ -3,11 +3,9 @@ import { AppBar, Toolbar, IconButton, Typography, Button } from "@material-ui/co
 import MenuIcon from '@material-ui/icons/Menu';
 import ShareIcon from '@material-ui/icons/Share';
 import { makeStyles } from '@material-ui/core/styles';
-
 import firebase from "../utils/firebase";
 import "firebase/auth";
 import "firebase/database"
-
 import history from "../utils/history"
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,8 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const [logedUser, setLogedUser] = useState()
-    const classes = useStyles();
-
+  const classes = useStyles();
   useEffect(() => {
     firebase.auth().onAuthStateChanged( (user)=> {
       if (user) {
@@ -78,12 +75,15 @@ export default function Home() {
                         JS Community
                             <ShareIcon fontSize="large"/>
           </Typography>
-                 
+
+         
             {!logedUser ? <Button onClick={signIn} color="inherit">Login</Button> : (<>
             <Button onClick={signOut} color="inherit">LogOut</Button>
               <Button onClick={() => { history.push({pathname:`/me/profile/${logedUser.id}`,state:logedUser})}} color="inherit">Profile</Button>
           
             </>)} 
+          
+     
         
         </Toolbar>
       </AppBar>
