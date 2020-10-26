@@ -23,7 +23,7 @@ export default function DisplayPosts(props) {
     }
     let renderList=''
     if (posts) {
-         
+     
         renderList = posts.map((post, index) => {
             const randem = Math.round(Math.random() * 3) + 1;
             const name = Array.from(post.name);
@@ -60,7 +60,7 @@ export default function DisplayPosts(props) {
           <Typography >Comments</Typography>
         </AccordionSummary>
         <AccordionDetails>
-         <Comment/>
+                                        <Comment post={post}/>
         </AccordionDetails>
       </Accordion>
                             </div>

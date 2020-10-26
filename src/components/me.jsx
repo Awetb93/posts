@@ -32,10 +32,10 @@ export default function Me() {
                 users.push({ email: user[id].profile.email, id, name:user[id].profile.name });
                 for (let ids in user[id].posts) {
                     if (user[id].posts[ids].posts.imageName) {
-                        posts.push({ posts: user[id].posts[ids].posts.text, imageName:user[id].posts[ids].posts.imageName,likes:user[id].posts[ids].posts.likes, postId:ids, id,name:user[id].profile.name,time:user[id].posts[ids].posts.time })    
+                        posts.push({ posts: user[id].posts[ids].posts.text, imageName:user[id].posts[ids].posts.imageName,likes:user[id].posts[ids].posts.likes, postId:ids, id,name:user[id].profile.name,time:user[id].posts[ids].posts.time, comments:[user[id].posts[ids].comments] })    
                     }
                     else {
-                          posts.push({ posts: user[id].posts[ids].posts.text,postId:ids, id,name:user[id].profile.name,likes:user[id].posts[ids].posts.likes,time:user[id].posts[ids].posts.time })  
+                          posts.push({ posts: user[id].posts[ids].posts.text,postId:ids, id,name:user[id].profile.name,likes:user[id].posts[ids].posts.likes,time:user[id].posts[ids].posts.time, comments:[user[id].posts[ids].comments]  })  
                     }
                   
                 }
