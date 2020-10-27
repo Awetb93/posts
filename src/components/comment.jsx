@@ -1,6 +1,7 @@
 import React,{useState,useRef,} from 'react';
 import firebase from '../utils/firebase';
-import {Button, Input} from "@material-ui/core"
+import { Button, Input ,Avatar} from "@material-ui/core"
+import { Link } from "react-router-dom"
 import "firebase/database"
 const Comment = ({post}) => {
   const [comment, setComment] = useState("")
@@ -12,18 +13,28 @@ console.log(post)
     db.child('comments').push({ comment, name: post.name, time: new Date().toLocaleTimeString() })
     setComment("")
   }
-  let list = '';
+  let list =[];
   if (post.comments) {
     for (let id in post.comments[0]) {
-      console.log(id);
-      console.log(post.comments[0][id])
+      list.push({...post.comments[0][id] })
+    
+    }
   }
-  }
+  const renderList =list.map((comnt, index) => {
+    return (
+      <div key={index}>
+        <Link to={`/profile/${post.id}`}><Avatar style={{ marginBottom: '10px' }}>{post.name}</Avatar></Link>
+        <p>{comnt.time}</p>
+        <p>{comnt.comment}</p>
+      </div>
+    )
+  })
   return (
     <div>
 
-      <Input onChange={e => setComment(e.target.value)} value={comment} ref={inputRef} />
+      <Input onChange={e => setComment(e.target.value)} value={comment} ref={inputRef} placeholder="write your comments"/>
       <Button onClick={handleCommet}>post</Button>
+      {renderList}
     </div>
   );
 }
