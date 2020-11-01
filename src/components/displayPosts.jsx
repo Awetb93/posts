@@ -6,24 +6,19 @@ import firebase from "../utils/firebase";
 import { Link, useParams } from "react-router-dom";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Comment from "./comment"
-import "firebase/database";
 import moment from "moment"
+import RenderPic from "./renderPic"
 export default function DisplayPosts(props) {
-
     const { id } = useParams();
-    
     const color = ['red', 'green', 'black', 'pink', 'orange'];
-    const {  posts, } = props;
+    const { posts, } = props;
     const handleLike = (post) => {
-        const { id ,postId}= post
-        // console.log(post.id)
+        const { id, postId } = post;
          const db = firebase.database().ref("user/" + id);
          db.child("posts/"+postId).child("posts").update({likes:post.likes+1})
-       
     }
     let renderList=''
     if (posts) {
-     
         renderList = posts.map((post, index) => {
             const randem = Math.round(Math.random() * 3) + 1;
             const name = Array.from(post.name);
@@ -31,6 +26,7 @@ export default function DisplayPosts(props) {
                 return null
             }
             else {
+                
                 return (
                     <div className="post-display" key={index}>
                         <div className="avatar" style={{ background: '#F5F5F5' }} >
@@ -39,7 +35,9 @@ export default function DisplayPosts(props) {
                             <p>{moment({inp: post.time }).fromNow()}</p>
                         </div>
                         <div style={{marginLeft:'10px',marginBottom:'10px'}}  >
-                            <p style={{marginBottom:'10px'}}>{post.posts}</p>
+                            <p style={{ marginBottom: '10px' }}>{post.posts}</p>
+
+                            {post.imageKey!==undefined? <RenderPic pic={{key:post.imageKey,name:post.imageName}} />:null}
                             <div className="post-dispaly-action">
                               <IconButton aria-label="show 11 new notifications" color="inherit"onClick={()=>handleLike(post)}>
                            <Badge badgeContent={post.likes}color="secondary">

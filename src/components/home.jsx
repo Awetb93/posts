@@ -47,7 +47,7 @@ export default function Home() {
     }
     catch (e) {
     
-
+history.push('/')
       console.log(e)
     }
   }

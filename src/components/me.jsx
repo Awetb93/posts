@@ -6,7 +6,8 @@ import firebase from "../utils/firebase";
 import DisplayPost from "./displayPosts"
 import moment from "moment"
 import 'firebase/database'
-import 'firebase/storage'
+import 'firebase/storage';
+import {v4 as Uid } from "uuid";
 import UserMenu from "./users"
 export default function Me() {
     // const filter=new Filter()
@@ -16,6 +17,7 @@ export default function Me() {
     const [dbusers,setDbUsers]=useState()
     const [posts,setPosts]=useState()
     const { state } = useLocation();
+    console.log(state)
     const name = Array.from(state.name);
     const [index,setIndex]=useState(0)
     const color = ['red', 'green', 'black','pink', 'orange'];
@@ -32,7 +34,7 @@ export default function Me() {
                 users.push({ email: user[id].profile.email, id, name:user[id].profile.name });
                 for (let ids in user[id].posts) {
                     if (user[id].posts[ids].posts.imageName) {
-                        posts.push({ posts: user[id].posts[ids].posts.text, imageName:user[id].posts[ids].posts.imageName,likes:user[id].posts[ids].posts.likes, postId:ids, id,name:user[id].profile.name,time:user[id].posts[ids].posts.time, comments:[user[id].posts[ids].comments] })    
+                        posts.push({ posts: user[id].posts[ids].posts.text,imageKey:user[id].posts[ids].posts.imageKey, imageName:user[id].posts[ids].posts.imageName,likes:user[id].posts[ids].posts.likes, postId:ids, id,name:user[id].profile.name,time:user[id].posts[ids].posts.time, comments:[user[id].posts[ids].comments] })    
                     }
                     else {
                           posts.push({ posts: user[id].posts[ids].posts.text,postId:ids, id,name:user[id].profile.name,likes:user[id].posts[ids].posts.likes,time:user[id].posts[ids].posts.time, comments:[user[id].posts[ids].comments]  })  
@@ -55,13 +57,14 @@ export default function Me() {
     const addPost = () => {
         const db = firebase.database().ref('user');
          const me = dbusers.find(user => user.email === state.email);
-        
+         const keys=Uid()
             // let filteredWords=filter.clean(text)
         if (me && imageFile) {
+           
             const storage = firebase.storage().ref('Images');
             const reg = imageName.match(/[ \w-]+?(?=\.)/);
-            const ref = storage.child(reg[0])
-            db.child(me.id).child('posts').push({ posts: { text, imageName: reg[0],likes:0,time:moment().format('hh:mm:ss a')  } });
+            const ref = storage.child(keys).child(reg[0])
+             db.child(me.id).child('posts').push({ posts: { text,imageKey:keys, imageName: reg[0], likes: 0, time: moment().format('hh:mm:ss a') } });
             ref.put(imageFile).then((snap) => {
                 console.log('file was uploaded')
                 setImage("")
@@ -73,10 +76,11 @@ export default function Me() {
             setText("")
         }
         else if (!me && imageFile) {
+           
             const storage = firebase.storage().ref('Images');
             const reg = imageName.match(/[ \w-]+?(?=\.)/);
-            const ref = storage.child(reg[0])
-            db.push({ profile: { ...state, age: 24 }, posts: { 0:{posts:{text, imageName: reg[0], likes: 0,time:moment().format('hh:mm:ss a')   }} } })
+            const ref = storage.child(keys).child(reg[0])
+            db.push({ profile: { ...state, age: 24 }, posts: { 0:{posts:{text,imageKey:keys, imageName: reg[0], likes: 0,time:moment().format('hh:mm:ss a')   }} } })
              ref.put(imageFile).then((snap) => {
                 console.log('file was uploaded')
                 
