@@ -75,7 +75,7 @@ export default function TemporaryDrawer(props) {
     <div>
      
         
-          <Button onClick={toggleDrawer('right', true)}>Right</Button>
+          <Button onClick={toggleDrawer('right', true)}>Users</Button>
           <Drawer anchor='right' open={state} onClose={toggleDrawer('right', false)}>
             {list('right')}
           </Drawer>

@@ -14,8 +14,6 @@ const RenderPic = ({ pic }) => {
     
     setPic(picKey,picName)
         }
-    
-    
     )
     console.log(imageLink)
     return (
@@ -24,5 +22,4 @@ const RenderPic = ({ pic }) => {
         </div>
     );
 }
-
 export default RenderPic;

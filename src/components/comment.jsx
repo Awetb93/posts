@@ -7,7 +7,6 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import "firebase/database"
 const Comment = ({post}) => {
   const [comment, setComment] = useState("")
-console.log(post)
   const inputRef = useRef();
   const handleCommet = () => {
     console.log(comment)
@@ -49,7 +48,7 @@ console.log(post)
        
       </ListItem>
    
-        // <Link to={`/profile/${post.id}`}><Avatar style={{ marginBottom: '10px' }}>{post.name}</Avatar></Link>
+        
     
      
     )

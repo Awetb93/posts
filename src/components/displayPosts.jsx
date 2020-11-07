@@ -26,17 +26,28 @@ export default function DisplayPosts(props) {
                 return null
             }
             else {
-                
+              
+                let list = []
+                let obj={}
+                if (post.comments) {
+    for (let id in post.comments[0]) {
+        list.push({ ...post.comments[0][id] });
+       
+                    }
+                    
+                }
+                obj[index]=list.length
+           
+       
+         
                 return (
                     <div className="post-display" key={index}>
                         <div className="avatar" style={{ background: '#F5F5F5' }} >
                             <Link to={`/profile/${id}`}><Avatar style={{ background: color[randem], marginBottom: '10px' }}>{name[0]}</Avatar></Link>
-                            
                             <p>{moment({inp: post.time }).fromNow()}</p>
                         </div>
                         <div style={{marginLeft:'10px',marginBottom:'10px'}}  >
                             <p style={{ marginBottom: '10px' }}>{post.posts}</p>
-
                             {post.imageKey!==undefined? <RenderPic pic={{key:post.imageKey,name:post.imageName}} />:null}
                             <div className="post-dispaly-action">
                               <IconButton aria-label="show 11 new notifications" color="inherit"onClick={()=>handleLike(post)}>
@@ -45,7 +56,7 @@ export default function DisplayPosts(props) {
                                 </Badge>
                                 </IconButton>
  <IconButton aria-label="show 11 new notifications" color="inherit">
-                              <Badge badgeContent={0} color="secondary">
+                              <Badge badgeContent={obj[index]} color="secondary">
                            <CommentIcon/>
                                 </Badge>
                               </IconButton>
@@ -53,18 +64,14 @@ export default function DisplayPosts(props) {
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
+          id="panel1a-header" >
           <Typography >Comments</Typography>
         </AccordionSummary>
         <AccordionDetails>
-                                        <Comment post={post}/>
+        <Comment post={post}/>
         </AccordionDetails>
       </Accordion>
                             </div>
-                          
-                           
-                           
                         </div>
                     </div>
                     )
@@ -74,14 +81,9 @@ export default function DisplayPosts(props) {
     }
     return (
         <div>
-        
             <Paper>
-                
                 {posts === undefined ? (<CircularProgress />) : renderList} 
-               
             </Paper>
-          
-             
         </div>
     )
 }
