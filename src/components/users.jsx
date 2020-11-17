@@ -18,28 +18,20 @@ const useStyles = makeStyles({
     width: 'auto',
   },
 });
-
 export default function TemporaryDrawer(props) {
     const { users } = props;
-    console.log(users)
+    // console.log(users)
   const classes = useStyles();
-  const [state, setState] = React.useState(
-    false
-  );
-
+  const [state, setState] = React.useState(false);
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     setState( open );
   };
-
-      if (users) {
-          
+      if (users) {    
       }
     const list = (anchor) => {
-
         if (users) {
             return (
                  <div
@@ -65,16 +57,9 @@ export default function TemporaryDrawer(props) {
     </div> 
             )
         }
-        
-
     }
-  
-  
-
   return (
     <div>
-     
-        
           <Button onClick={toggleDrawer('right', true)}>Users</Button>
           <Drawer anchor='right' open={state} onClose={toggleDrawer('right', false)}>
             {list('right')}

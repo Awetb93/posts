@@ -8,7 +8,7 @@ const Header = () => {
         <Switch>
         {/* <Route path="/me/:id" exact component={Home} ></Route> */}
         <Route path="/me/:id" exact component={Me} ></Route>
-        <Route path="/me/profile/:id" exact component={Profile} ></Route>
+        <Route path="/profile/:id" exact component={Profile} ></Route>
     </Switch> 
     )
    

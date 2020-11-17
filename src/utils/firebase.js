@@ -1,5 +1,5 @@
 import firebase from "firebase/app";
-   var firebaseConfig = {
+   let firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: "community-fc578.firebaseapp.com",
     databaseURL: "https://community-fc578.firebaseio.com",

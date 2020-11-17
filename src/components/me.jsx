@@ -17,8 +17,10 @@ export default function Me() {
     const [dbusers,setDbUsers]=useState()
     const [posts,setPosts]=useState()
     const { state } = useLocation();
-    console.log(state)
-    const name = Array.from(state.name);
+    let name=''
+    if (state) {
+     name = Array.from(state.name);
+    }
     const [index,setIndex]=useState(0)
     const color = ['red', 'green', 'black','pink', 'orange'];
     useEffect(() => {
@@ -29,7 +31,6 @@ export default function Me() {
             const user = snap.val();
             let users = [];
             let posts = [];
-           
              for (let id in user) {
                 users.push({ email: user[id].profile.email, id, name:user[id].profile.name });
                 for (let ids in user[id].posts) {
@@ -38,29 +39,29 @@ export default function Me() {
                     }
                     else {
                           posts.push({ posts: user[id].posts[ids].posts.text,postId:ids, id,name:user[id].profile.name,likes:user[id].posts[ids].posts.likes,time:user[id].posts[ids].posts.time, comments:[user[id].posts[ids].comments]  })  
-                    }
-                  
+                    }         
                 }
             }    
-            
-           
             setDbUsers(users)
             setPosts(posts)
-            console.log(users)
-            console.log(posts)
+            // console.log(users)
+            // console.log(posts)
         })
         return () => {
           db.off()
       }
-    
-    },[])
+    }, [])
+    let thisMe = [];
+    if (dbusers) {
+        thisMe = dbusers.find(user => user.email === state.email);
+    }
+    console.log(thisMe)
     const addPost = () => {
         const db = firebase.database().ref('user');
          const me = dbusers.find(user => user.email === state.email);
          const keys=Uid()
             // let filteredWords=filter.clean(text)
         if (me && imageFile) {
-           
             const storage = firebase.storage().ref('Images');
             const reg = imageName.match(/[ \w-]+?(?=\.)/);
             const ref = storage.child(keys).child(reg[0])
@@ -76,29 +77,21 @@ export default function Me() {
             setText("")
         }
         else if (!me && imageFile) {
-           
             const storage = firebase.storage().ref('Images');
             const reg = imageName.match(/[ \w-]+?(?=\.)/);
             const ref = storage.child(keys).child(reg[0])
             db.push({ profile: { ...state, age: 24 }, posts: { 0:{posts:{text,imageKey:keys, imageName: reg[0], likes: 0,time:moment().format('hh:mm:ss a')   }} } })
              ref.put(imageFile).then((snap) => {
                 console.log('file was uploaded')
-                
-              
              })
             setImage("")
             setText("")
-
             }
-       
         else {
-      
             db.push({ profile: { ...state, age: 24 },  posts: { 0:{posts:{text, likes: 0,time:moment().format('hh:mm:ss a')  }} } })
             setText("")
         } }
- 
-    const handleFile = (e) => {
-  
+     const handleFile = (e) => {
         setImage(e.target.value);
          setImageFile(e.target.files[0])
     }
@@ -115,7 +108,6 @@ export default function Me() {
                             <div className="avatar" >
                   <Avatar style={{background:color[index]}}>{name[0]}</Avatar>
                             </div>
-                       
                         <div className="post-edit" >
                             <TextField style={{width:'100%'}} onChange={e=>setText(e.target.value)} value={text}
                              id="outlined-textarea"label={`what is in your mind ${state.name}?`}
@@ -127,28 +119,22 @@ export default function Me() {
                           <PhotoCamera />
                         </IconButton>
                           </label>
-                              
                             <Button onClick={addPost} >Post</Button>
                         </div>
                         </div>
                     </div>
                     <div className="view-posts">
-                     
-                            <DisplayPost userInfo={dbusers} posts={posts} />
+                     <DisplayPost userInfo={state.email} posts={posts} />
                         </div>
                         <div className="user-container">
-                                 <UserMenu users={dbusers} className="user-list"/>
+                        <UserMenu users={dbusers} className="user-list"/>
                         </div>
                         </Paper>
                 </Grid>
                 <Grid item sm={1} md={2} >
-
-               
                 </Grid>
             </Grid>
             <Grid item sm={1} md={2} ></Grid>
-     </Grid>
-      
-       
+             </Grid>       
     )
 }

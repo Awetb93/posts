@@ -3,15 +3,16 @@ import { CircularProgress, Paper, Avatar, IconButton,Badge, Accordion,AccordionS
 import CommentIcon from '@material-ui/icons/Comment';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import firebase from "../utils/firebase";
-import { Link, useParams } from "react-router-dom";
+import { Link, } from "react-router-dom";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Comment from "./comment"
 import moment from "moment"
 import RenderPic from "./renderPic"
 export default function DisplayPosts(props) {
-    const { id } = useParams();
+    // const { id } = useParams();
     const color = ['red', 'green', 'black', 'pink', 'orange'];
-    const { posts, } = props;
+    const { posts, userInfo } = props;
+    console.log(userInfo)
     const handleLike = (post) => {
         const { id, postId } = post;
          const db = firebase.database().ref("user/" + id);
@@ -26,24 +27,19 @@ export default function DisplayPosts(props) {
                 return null
             }
             else {
-              
+            //   console.log(post)
                 let list = []
                 let obj={}
                 if (post.comments) {
     for (let id in post.comments[0]) {
         list.push({ ...post.comments[0][id] });
-       
-                    }
-                    
+                    } 
                 }
                 obj[index]=list.length
-           
-       
-         
                 return (
                     <div className="post-display" key={index}>
                         <div className="avatar" style={{ background: '#F5F5F5' }} >
-                            <Link to={`/profile/${id}`}><Avatar style={{ background: color[randem], marginBottom: '10px' }}>{name[0]}</Avatar></Link>
+                            <Link to={{pathname:`/profile/${post.id}`,state:{userInfo}}}><Avatar style={{ background: color[randem], marginBottom: '10px' }}>{name[0]}</Avatar></Link>
                             <p>{moment({inp: post.time }).fromNow()}</p>
                         </div>
                         <div style={{marginLeft:'10px',marginBottom:'10px'}}  >
@@ -68,7 +64,7 @@ export default function DisplayPosts(props) {
           <Typography >Comments</Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <Comment post={post}/>
+                                        <Comment post={post} useremail={ userInfo}/>
         </AccordionDetails>
       </Accordion>
                             </div>
@@ -76,7 +72,6 @@ export default function DisplayPosts(props) {
                     </div>
                     )
             }
-    
 }) 
     }
     return (

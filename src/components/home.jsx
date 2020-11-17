@@ -79,7 +79,7 @@ history.push('/')
          
             {!logedUser ? <Button onClick={signIn} color="inherit">Login</Button> : (<>
             <Button onClick={signOut} color="inherit">LogOut</Button>
-              <Button onClick={() => { history.push({pathname:`/me/profile/${logedUser.id}`,state:logedUser})}} color="inherit">Profile</Button>
+              <Button onClick={() => { history.push({pathname:`/profile/${logedUser.id}`,state:logedUser})}} color="inherit">Profile</Button>
           
             </>)} 
           
